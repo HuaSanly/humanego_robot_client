@@ -1,0 +1,122 @@
+
+<launch>
+  <!-- ========================================= -->
+  <!-- USB Stereo Camera: 5184x1944 @ 30fps     -->
+  <!-- Side-by-Side (SBS)                       -->
+  <!-- Output: Left / Right 2400x1800           -->
+  <!-- ROS Noetic                               -->
+  <!-- ========================================= -->
+
+  <arg name="device" default="/dev/video0"/>
+  <arg name="fps" default="30"/>
+
+  <!-- 1. Read combined UVC image -->
+  <node pkg="usb_cam"
+        type="usb_cam_node"
+        name="usb_cam"
+        ns="stereo"
+        output="screen">
+
+    <param name="video_device" value="$(arg device)"/>
+    <param name="image_width" value="5184"/>
+    <param name="image_height" value="1944"/>
+    <param name="pixel_format" value="mjpeg"/>
+    <param name="framerate" value="$(arg fps)"/>
+    <param name="camera_frame_id" value="stereo_camera"/>
+
+    <remap from="image_raw"
+           to="image_combined"/>
+  </node>
+
+  <!-- 2. Nodelet manager -->
+  <node pkg="nodelet"
+        type="nodelet"
+        name="manager"
+        ns="stereo"
+        args="manager"
+        output="screen"/>
+
+  <!-- 3. Resize combined image -->
+  <!-- 5184x1944 -> 4800x1800 -->
+  <node pkg="nodelet"
+        type="nodelet"
+        name="resize"
+        ns="stereo"
+        args="load image_proc/resize manager"
+        output="screen">
+
+    <param name="use_scale" value="false"/>
+    <param name="width" value="4800"/>
+    <param name="height" value="1800"/>
+    <param name="interpolation" value="1"/>
+
+    <remap from="image"
+       to="/stereo/usb_cam/image_raw"/>
+
+    <remap from="camera_info"
+        to="/stereo/usb_cam/camera_info"/>
+  </node>
+
+  <!-- 4. Left camera crop -->
+  <!-- 4800x1800 -> left 2400x1800 -->
+  <node pkg="nodelet"
+        type="nodelet"
+        name="left_crop"
+        ns="stereo"
+        args="load image_proc/crop_decimate manager"
+        output="screen">
+
+    <param name="x_offset" value="0"/>
+    <param name="y_offset" value="0"/>
+    <param name="width" value="2400"/>
+    <param name="height" value="1800"/>
+
+    <param name="decimation_x" value="1"/>
+    <param name="decimation_y" value="1"/>
+    <param name="target_frame_id" value="left_camera"/>
+
+    <remap from="camera/image_raw"
+           to="/stereo/resize/image"/>
+
+    <remap from="camera/camera_info"
+           to="/stereo/resize/camera_info"/>
+
+    <remap from="camera_out/image_raw"
+           to="/stereo/left/image_raw"/>
+
+    <remap from="camera_out/camera_info"
+           to="/stereo/left/camera_info"/>
+  </node>
+
+  <!-- 5. Right camera crop -->
+  <!-- 4800x1800 -> right 2400x1800 -->
+  <node pkg="nodelet"
+        type="nodelet"
+        name="right_crop"
+        ns="stereo"
+        args="load image_proc/crop_decimate manager"
+        output="screen">
+
+    <param name="x_offset" value="2400"/>
+    <param name="y_offset" value="0"/>
+    <param name="width" value="2400"/>
+    <param name="height" value="1800"/>
+
+    <param name="decimation_x" value="1"/>
+    <param name="decimation_y" value="1"/>
+    <param name="target_frame_id" value="right_camera"/>
+
+    <remap from="camera/image_raw"
+           to="/stereo/resize/image"/>
+
+    <remap from="camera/camera_info"
+           to="/stereo/resize/camera_info"/>
+
+    <remap from="camera_out/image_raw"
+           to="/stereo/right/image_raw"/>
+
+    <remap from="camera_out/camera_info"
+           to="/stereo/right/camera_info"/>
+  </node>
+
+</launch>

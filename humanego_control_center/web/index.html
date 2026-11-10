@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#080b10" />
+    <title>ROBOT / TELEOP CONTROL</title>
+    <link rel="stylesheet" href="/app.css" />
+  </head>
+  <body>
+    <div class="noise" aria-hidden="true"></div>
+    <main class="shell">
+      <header class="topbar">
+        <div class="brand-block">
+          <div class="eyebrow"><span class="live-dot"></span> HUMANOID SYSTEMS · LOCAL CONSOLE</div>
+          <div class="title-row">
+            <h1>HUMANEGO <span>CONTROL</span></h1>
+            <div class="version">ROS 1</div>
+          </div>
+          <p>机器人驱动与 HumanEgo 客户端统一控制</p>
+        </div>
+        <div class="system-clock" aria-label="服务器时间">
+          <span class="clock-label">SERVER TIME / CST</span>
+          <strong id="clock">--:--:--</strong>
+          <small id="date">----</small>
+        </div>
+      </header>
+
+      <section class="command-deck" aria-label="整体控制">
+        <div class="sequence-panel">
+          <div class="sequence-glyph" id="sequenceGlyph">01</div>
+          <div>
+            <span class="section-label">STARTUP SEQUENCE</span>
+            <h2 id="sequenceTitle">正在连接控制服务</h2>
+            <p id="sequenceMessage">等待服务器状态…</p>
+          </div>
+        </div>
+        <div class="metrics" aria-label="任务统计">
+          <div class="metric"><span id="runningCount">0</span><small>RUNNING</small></div>
+          <div class="metric"><span id="readyCount">0</span><small>COMPLETE</small></div>
+          <div class="metric alert"><span id="errorCount">0</span><small>FAULTS</small></div>
+        </div>
+        <div class="global-actions">
+          <button class="button primary" data-global-action="start">
+            <span class="button-icon">▶</span><span>一键启动</span>
+          </button>
+          <button class="button" data-global-action="restart">
+            <span class="button-icon">↻</span><span>全部重启</span>
+          </button>
+          <button class="button danger" data-global-action="stop">
+            <span class="button-icon">■</span><span>全部停止</span>
+          </button>
+        </div>
+      </section>
+
+      <section class="utility-row">
+        <div class="connection-state" id="connectionState">
+          <span class="signal-bars"><i></i><i></i><i></i></span>
+          <span>CONNECTING</span>
+        </div>
+        <div class="utility-actions">
+          <label class="search-box">
+            <span>⌕</span>
+            <input id="logFilter" type="search" placeholder="筛选全部终端日志" autocomplete="off" />
+          </label>
+          <button class="text-button" id="toggleScroll" aria-pressed="true">自动滚动 · 开</button>
+          <button class="text-button" data-global-action="cleanup">清理全部残留</button>
+        </div>
+      </section>
+
+      <div id="taskGroups" class="task-groups" aria-live="polite"></div>
+
+      <footer>
+        <span>CONTROL SURFACE / LOOPBACK ONLY</span>
+        <span id="operatorLabel">OPERATOR · --</span>
+      </footer>
+    </main>
+
+    <div class="toast-stack" id="toastStack" aria-live="polite"></div>
+
+    <dialog id="confirmDialog" class="confirm-dialog">
+      <form method="dialog">
+        <span class="dialog-kicker">SAFETY CHECK</span>
+        <h2>停止全部任务？</h2>
+        <p>系统将按逆序向驱动发送 Ctrl+C，等待电机失能回调，再逐级清理未退出的子进程与残留。</p>
+        <div class="dialog-actions">
+          <button value="cancel" class="button">取消</button>
+          <button value="confirm" class="button danger">确认停止</button>
+        </div>
+      </form>
+    </dialog>
+
+    <script src="/app.js" defer></script>
+  </body>
+</html>

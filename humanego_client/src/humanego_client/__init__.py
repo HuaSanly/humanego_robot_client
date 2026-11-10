@@ -1,0 +1,1 @@
+"""HumanEgo local robot client."""

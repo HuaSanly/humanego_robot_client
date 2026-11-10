@@ -1,0 +1,31 @@
+listen_endpoint: tcp://127.0.0.1:5557
+feedback_timeout_s: 0.20
+feedback_source_skew_s: 0.10
+command_topic: /command_joint_states
+motor_command_names:
+  - eyou_motor1
+  - eyou_motor2
+  - eyou_motor3
+  - damiao_motor1
+  - damiao_motor2
+  - damiao_motor3
+  - damiao_motor4
+  - damiao_motor5
+  - damiao_motor6
+  - damiao_motor7
+  - damiao_motor8
+  - feetech_motor1
+  - feetech_motor2
+  - feetech_motor3
+  - feetech_motor4
+  - feetech_motor5
+  - feetech_motor6
+  - feetech_motor7
+  - feetech_motor8
+  - feetech_motor9
+  - feetech_motor10
+
+feedback_topics:
+  damiao: /feedback_damiao_joint_states
+  feetech: /feedback_feetech_joint_states
+

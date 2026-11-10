@@ -1,0 +1,91 @@
+{
+  "tasks": [
+    {
+      "id": "feetech",
+      "order": 10,
+      "title": "Feetech 小臂电机",
+      "subtitle": "串行舵机使能",
+      "group": "电机与总线",
+      "accent": "amber",
+      "run_as": "operator",
+      "auto_start": true,
+      "startup_delay_sec": 2.0,
+      "stop_grace_sec": 4.0,
+      "stop_settle_sec": 1.0,
+      "command": "cd \"$TELEOP_HOME/ROS/humanoid_control_ws/src\" && exec stdbuf -oL -eL ./feetech.bash",
+      "cleanup_patterns": ["/feetech.bash", "./feetech.bash"]
+    },
+    {
+      "id": "can",
+      "order": 20,
+      "title": "CAN 总线",
+      "subtitle": "达妙电机通信准备",
+      "group": "电机与总线",
+      "accent": "orange",
+      "run_as": "root",
+      "auto_start": true,
+      "wait_for_exit": true,
+      "startup_timeout_sec": 20.0,
+      "command": "cd \"$TELEOP_HOME/ROS/humanoid_control_ws/src\" && exec stdbuf -oL -eL ./can.bash",
+      "cleanup_patterns": ["/can.bash", "./can.bash"]
+    },
+    {
+      "id": "damiao",
+      "order": 30,
+      "title": "Damiao 大臂电机",
+      "subtitle": "Root 权限电机使能",
+      "group": "电机与总线",
+      "accent": "rose",
+      "run_as": "root",
+      "auto_start": true,
+      "startup_delay_sec": 2.5,
+      "startup_timeout_sec": 20.0,
+      "readiness_command": "source \"$TELEOP_HOME/ROS/humanoid_control_ws/devel/setup.bash\" && exec /usr/bin/python3 \"$TELEOP_CONSOLE_DIR/check_damiao_feedback.py\" --timeout 15",
+      "stop_grace_sec": 4.0,
+      "stop_settle_sec": 1.0,
+      "command": "cd \"$TELEOP_HOME/ROS/humanoid_control_ws/src\" && exec stdbuf -oL -eL ./damiao.bash",
+      "cleanup_patterns": ["/damiao.bash", "./damiao.bash"]
+    },
+    {
+      "id": "robot_adapter",
+      "order": 40,
+      "title": "HumanEgo ROS 适配器",
+      "subtitle": "三路电机反馈与 ZeroMQ 桥接",
+      "group": "HumanEgo",
+      "accent": "cyan",
+      "run_as": "operator",
+      "auto_start": true,
+      "startup_delay_sec": 2.0,
+      "command": "cd \"$TELEOP_HOME/ROS/ego_ws\" && source /opt/ros/noetic/setup.bash && source devel/setup.bash && exec stdbuf -oL -eL roslaunch humanego_ros_adapter adapter.launch",
+      "cleanup_patterns": ["roslaunch humanego_ros_adapter adapter.launch", "humanego_ros_adapter/adapter.launch"]
+    },
+    {
+      "id": "motor_feedback",
+      "order": 50,
+      "title": "电机状态监视",
+      "subtitle": "/feedback_feetech_joint_states",
+      "group": "遥操作",
+      "accent": "blue",
+      "run_as": "operator",
+      "auto_start": true,
+      "startup_delay_sec": 1.5,
+      "command": "cd \"$TELEOP_HOME/ROS/humanoid_control_ws\" && source devel/setup.bash && exec stdbuf -oL -eL rostopic echo /feedback_feetech_joint_states",
+      "cleanup_patterns": ["rostopic echo /feedback_feetech_joint_states"]
+    },
+    {
+      "id": "humanego_client",
+      "order": 60,
+      "title": "HumanEgo 客户端",
+      "subtitle": "双目视觉 · 远端推理 · 本地 IK",
+      "group": "HumanEgo",
+      "accent": "green",
+      "run_as": "operator",
+      "auto_start": false,
+      "startup_delay_sec": 2.0,
+      "control_modes": ["record_only", "execute"],
+      "default_control_mode": "record_only",
+      "command": "cd \"$TELEOP_HOME/ROS/ego_ws/src/humanego_client\" && exec stdbuf -oL -eL ./launch/humanego_client.sh",
+      "cleanup_patterns": ["humanego_client.main", "launch/humanego_client.sh"]
+    }
+  ]
+}

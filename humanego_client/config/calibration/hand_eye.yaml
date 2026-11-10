@@ -1,0 +1,13 @@
+# URDF camera-link to raw left optical axes. Camera translation assumes the
+# EYEL_Link origin is the left optical center; verify this against the camera CAD.
+source: urdf_camera_link_axes
+urdf_path: /home/nvidia/ROS/BRXURDF_ws/src/BRX20260825/urdf/BRX20260825.urdf
+base_frame: base_link
+urdf_camera_frame: EYEL_Link
+# URDF body axes are +X forward, +Y left, +Z up. Raw optical axes are
+# +X image-right, +Y image-down, +Z forward. Stereo R1 is applied at runtime.
+T_optical_from_urdf_camera:
+  - [0.0, -1.0, 0.0, 0.0]
+  - [0.0, 0.0, -1.0, 0.0]
+  - [1.0, 0.0, 0.0, 0.0]
+  - [0.0, 0.0, 0.0, 1.0]

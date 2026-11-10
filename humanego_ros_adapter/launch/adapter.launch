@@ -1,0 +1,6 @@
+<launch>
+  <arg name="config" default="$(find humanego_ros_adapter)/config/adapter.yaml" />
+  <node pkg="humanego_ros_adapter" type="bridge_node.py" name="humanego_ros_adapter" output="screen">
+    <rosparam command="load" file="$(arg config)" />
+  </node>
+</launch>

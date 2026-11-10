@@ -1,0 +1,99 @@
+# ==========================================
+# 1. 测试代码
+# ==========================================
+**/tests/
+**/test/
+test_*
+*_test.*
+*.test.*
+
+# ==========================================
+# 2. Python 临时文件及缓存
+# ==========================================
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.hypothesis/
+.cache/
+.tox/
+.nox/
+.coverage
+.coverage.*
+htmlcov/
+
+# ==========================================
+# 3. ROS / CMake 编译产物
+# ==========================================
+build/
+devel/
+install/
+log/
+CMakeFiles/
+CMakeCache.txt
+.catkin_tools/
+.catkin_workspace
+cmake_install.cmake
+compile_commands.json
+*.o
+*.a
+*.so
+*.dll
+*.dylib
+*.exe
+
+# ==========================================
+# 4. 运行时临时文件
+# ==========================================
+*.pid
+*.log
+*.tmp
+*.temp
+*.swp
+*.swo
+*.bak
+*.orig
+*.rej
+*~
+tmp/
+temp/
+logs/
+
+# 控制器运行时文件
+.controller.pid
+.control-token
+
+# ==========================================
+# 5. Python 虚拟环境
+# ==========================================
+.venv/
+venv/
+env/
+
+# ==========================================
+# 6. 环境变量及敏感信息
+# ==========================================
+.env
+.env.*
+!.env.example
+
+# ==========================================
+# 7. 编辑器及操作系统文件
+# ==========================================
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# ==========================================
+# 8. 常见运行输出及实验记录
+# ==========================================
+wandb/
+runs/
+outputs/
+checkpoints/
+
+# Local calibration capture archive
+/calibrationdata.tar.gz

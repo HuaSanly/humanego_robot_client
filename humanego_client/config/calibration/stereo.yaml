@@ -1,0 +1,34 @@
+# Derived from calibrationdata.tar.gz.
+# The archive records each eye at 2400x1800 after the 5184x1944 packed stream
+# was resized to 4800x1800 and split. Intrinsics are scaled by 640/2400 and
+# 480/1800 (both 0.2666666667) for the client's 640x480 eye images.
+image_width: 640
+image_height: 480
+# K_left(640x480):
+# [[222.209416, 0, 333.949616],
+#  [0, 221.989394667, 229.8432],
+#  [0, 0, 1]]
+camera_matrix_left:
+  - [222.209416, 0.0, 333.949616]
+  - [0.0, 221.989394667, 229.8432]
+  - [0.0, 0.0, 1.0]
+distortion_left: [0.002403, -0.015801, 0.000534, -0.001080, 0.0]
+# K_right(640x480):
+# [[222.002224, 0, 329.031496],
+#  [0, 221.969690667, 249.999656],
+#  [0, 0, 1]]
+camera_matrix_right:
+  - [222.002224, 0.0, 329.031496]
+  - [0.0, 221.969690667, 249.999656]
+  - [0.0, 0.0, 1.0]
+distortion_right: [-0.002906, -0.013047, -0.001126, -0.002410, 0.0]
+# R = R_rect_right^T * R_rect_left from the archived ROS calibration.
+rotation_left_to_right:
+  - [0.999991164173, -0.000166237064, 0.004200302710]
+  - [0.000179348852, 0.999995121627, -0.003120667155]
+  - [-0.004199759084, 0.003121402490, 0.999986302792]
+# OpenCV stereo convention: T in X_right = R X_left + T. The full vector is
+# recovered from the archived right rectification matrix and P2 baseline term.
+translation_left_to_right_m: [-0.0600315025392, 0.00030573302667, -0.000937138829996]
+# Keep startup blocked until the scaled maps are checked with live images.
+calibration_validated: true

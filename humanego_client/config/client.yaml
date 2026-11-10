@@ -1,0 +1,54 @@
+camera_config: camera.yaml
+calibration_dir: calibration
+
+server:
+  # Optional when endpoint, deployment and semantics are specified below.
+  config_path: null
+  # These values must match the exported server.yaml exactly. humanego_brx is
+  # the server robot_type, not the Zenoh deployment name.
+  deployment: humanego-pick-cube-anchor
+  semantics: humanego.right-ee.left-rectified-optical.m.row-major-rotation6d.continuous-grasp.v1
+  endpoint: tcp/192.168.5.16:7447
+  action_interval_s: 0.0333333333
+  refill_seconds: 1.65
+  max_observation_age_s: 1.67
+  action_timeout_s: 10.0
+  startup_timeout_s: 30.0
+  handshake_timeout_s: 3.0
+  action_starvation_grace_s: 3.0
+  encoding: jpeg
+  jpeg_quality: 85
+  task: pick_cube
+
+ipc:
+  endpoint: tcp://127.0.0.1:5557
+  timeout_ms: 100
+  max_state_age_s: 0.10
+
+robot:
+  urdf_path: /home/nvidia/ROS/BRXURDF_ws/src/BRX20260825/urdf/BRX20260825.urdf
+  active_joint_names: [ArmR02_Joint, ArmR03_Joint, ArmR04_Joint, ArmR05_Joint, ArmR06_Joint, ArmR07_Joint, ArmR08_Joint]
+  base_frame: base_link
+  right_ee_frame: LinearclampinggripperJZ01_Link
+  # T_urdf_ee_from_hand: nominal closed-fingertip midpoint and model hand axes.
+  # Hand +X points from JawBlock01 toward JawBlock02; +Y points toward the tips;
+  # +Z completes the right-handed frame. Translation is derived from URDF/STL.
+  T_urdf_ee_from_hand:
+    - [0.0, 1.0, 0.0, 0.117001314]
+    - [1.0, 0.0, 0.0, 0.002079025]
+    - [0.0, 0.0, -1.0, 0.0]
+    - [0.0, 0.0, 0.0, 1.0]
+  gripper_open_angle_rad: 0.8923
+
+control:
+  mode: execute  #record_only
+  action_horizon: 50
+  action_hz: 30.0
+  max_position_step_m: 0.10
+  max_rotation_step_rad: 0.8
+  max_position_m: [1.0, 1.0, 1.4]
+  min_position_m: [-1.0, -1.0, 0.0]
+  max_joint_delta_rad: 0.9
+  grasp_close_threshold: 0.65
+  grasp_open_threshold: 0.45
+  grasp_debounce_steps: 3

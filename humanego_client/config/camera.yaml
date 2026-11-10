@@ -1,0 +1,12 @@
+device: /dev/video0
+backend: v4l2
+capture_width: 5184
+capture_height: 1944
+capture_fps: 30
+fourcc: MJPG
+side_by_side: horizontal
+left_first: true
+output_width: 640
+output_height: 480
+open_timeout_s: 5.0
+frame_timeout_s: 1.0
