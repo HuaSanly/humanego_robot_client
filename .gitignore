@@ -97,3 +97,6 @@ checkpoints/
 
 # Local calibration capture archive
 /calibrationdata.tar.gz
+
+# 本地开发约定
+/AGENTS.md
